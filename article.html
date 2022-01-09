@@ -23,15 +23,13 @@
         <nav class="navbar navbar-light bg-light">
           <div class="input-group">
             <input
+              onkeyup="SearchData(event)"
               type="search"
               class="form-control rounded"
               placeholder="Search"
               aria-label="Search"
               aria-describedby="search-addon"
             />
-            <button type="button" class="btn btn-outline-primary">
-              search
-            </button>
           </div>
         </nav>
 
@@ -81,8 +79,8 @@
       };
 
       const renderSidebar = (postDataSource, usersDataSource) => {
-        debugger;
         const containerTitle = document.getElementById("articleTitle");
+        containerTitle.innerHTML = "";
         for (let i = 0; i < usersDataSource.length; i++) {
           for (let j = 0; j < postDataSource.length; j++) {
             if (usersDataSource[i].id == postDataSource[j].userId) {
@@ -107,9 +105,10 @@
 
       const openContainer = (id, uId) => {
         const containerTitle = document.getElementById("containerArticle");
+        const commentArticles = document.getElementById("commentArticle");
         if (id) {
           containerTitle.innerHTML = ` <div class="card mb-3 mt-5">
-          <h3><b>Name : </b>${usersData[uId - 1].name} </h3>
+          <h3>${usersData[uId - 1].name} </h3>
           <div class="card-body">
             <h5 class="card-title">${postData[id - 1].title}</h5>
             <p class="card-text">
@@ -137,26 +136,43 @@
             </p>
           </div>
         </div>`;
+          commentsData.forEach((element) => {
+            if (element.postId === 1) {
+              commentArticles.innerHTML += `
+              <div class="mb-3" style="background-color: lightgray;">
+              <div style="color: mediumblue;"><b>Name :</b> ${element.name}</div>
+              <div ><b>Email :</b> ${element.email}</div>
+              <div ><b>Comment :</b> ${element.body}</div></div>`;
+            }
+          });
         }
+
         console.log("id :", id);
       };
 
       const Comments = (id) => {
         const deneme = document.getElementById("commentArticle");
         deneme.innerHTML = "";
+
         if (id) {
           commentsData.forEach((element) => {
             if (id === element.postId) {
-              deneme.innerHTML += `<div class="mb-3" style="background-color: lightgray;">
-            <div style="color: mediumblue;"><b>Name :</b> ${element.name}</div>
-<div ><b>Email :</b> ${element.email}</div>
-<div ><b>Comment :</b> ${element.body}</div></div>
-            
-            `;
+              deneme.innerHTML += `
+              <div class="mb-3" style="background-color: lightgray;">
+              <div style="color: mediumblue;"><b>Name :</b> ${element.name}</div>
+              <div ><b>Email :</b> ${element.email}</div>
+              <div ><b>Comment :</b> ${element.body}</div></div>`;
             }
           });
-        } else {
         }
+      };
+
+      const SearchData = (event) => {
+        let searcText = event.target.value;
+        const filterData = postData.filter((x) =>
+          new RegExp(searcText, "i").test(x.title)
+        );
+        renderSidebar(filterData, usersData);
       };
     </script>
   </body>
