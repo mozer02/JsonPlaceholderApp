@@ -28,27 +28,49 @@ const loadListData = async () => {
 const renderSidebar = (postDataSource, usersDataSource) => {
   const containerTitle = document.getElementById("articleTitle");
   containerTitle.innerHTML = "";
-  for (let i = 0; i < usersDataSource.length; i++) {
-    for (let j = 0; j < postDataSource.length; j++) {
-      if (usersDataSource[i].id == postDataSource[j].userId) {
+  usersDataSource.forEach((element) => {
+    postDataSource.forEach((element1) => {
+      if (element.id == element1.userId) {
         containerTitle.innerHTML += `<div class="list-group list-group-flush border-bottom scrollarea mb-1">
         <button
-          onclick='openContainer(${postDataSource[j]?.id},${postDataSource[j]?.userId}),Comments(${postDataSource[j]?.id})'
+          onclick='openContainer(${element1?.id},${element1?.userId}),Comments(${element1?.id})'
           class="list-group-item list-group-item-action active py-3 lh-tight"
           aria-current="true"
         >
           <div
             class="d-flex w-100 align-items-center justify-content-between"
           >
-            <strong class="mb-1">${postDataSource[j].title}</strong>
-            <small>${usersDataSource[i].username}</small>
+            <strong class="mb-1">${element1.title}</strong>
+            <small>${element.username}</small>
           </div>
         </button>
       </div>`;
       }
-    }
-  }
+    });
+  });
 };
+
+//   for (let i = 0; i < usersDataSource.length; i++) {
+//     for (let j = 0; j < postDataSource.length; j++) {
+//       if (usersDataSource[i].id == postDataSource[j].userId) {
+//         containerTitle.innerHTML += `<div class="list-group list-group-flush border-bottom scrollarea mb-1">
+//         <button
+//           onclick='openContainer(${postDataSource[j]?.id},${postDataSource[j]?.userId}),Comments(${postDataSource[j]?.id})'
+//           class="list-group-item list-group-item-action active py-3 lh-tight"
+//           aria-current="true"
+//         >
+//           <div
+//             class="d-flex w-100 align-items-center justify-content-between"
+//           >
+//             <strong class="mb-1">${postDataSource[j].title}</strong>
+//             <small>${usersDataSource[i].username}</small>
+//           </div>
+//         </button>
+//       </div>`;
+//       }
+//     }
+//   }
+// };
 
 const openContainer = (id, uId) => {
   const containerTitle = document.getElementById("containerArticle");
